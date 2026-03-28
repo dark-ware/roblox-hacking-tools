@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+:root{
+  --blood:#7b0000;
+  --blood-dark:#3c0000;
+  --bg-dark:#070406;
+  --accent:#ff2e2e;
+}
+
+/* Target common popup wrappers */
+.popup, .modal, #popup, #modal, .popup-content, .bloody-popup{
+  font-family: 'Creepster', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: radial-gradient(circle at 10% 10%, rgba(255,0,0,0.04), transparent 12%),
+              linear-gradient(180deg, #220000 0%, #050203 80%);
+  color: #ffdede;
+  border: 4px solid rgba(110,0,0,0.95);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.9), inset 0 2px 12px rgba(255,0,0,0.04);
+  padding: 22px 26px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  max-width: 480px;
+}
+
+/* Headline: jagged, bloody glow */
+.popup h1, .modal h1, .bloody-popup h1{
+  font-size: clamp(20px, 5vw, 42px);
+  margin: 0 0 8px;
+  color: #ffe7e7;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,0.8),
+    0 6px 24px rgba(120,0,0,0.8),
+    0 0 18px rgba(255,0,0,0.12);
+}
+
+.popup p, .modal p { color:#ffdede; margin: 8px 0 16px; }
+
+/* Dripping / splatter overlays using pseudo-elements */
+.popup::before, .popup::after, .bloody-popup::before, .bloody-popup::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.popup::before, .bloody-popup::before{
+  top: -30%;
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(255,40,40,0.95), transparent 10%),
+    radial-gradient(circle at 85% 18%, rgba(200,0,0,0.92), transparent 12%),
+    linear-gradient(180deg, rgba(120,0,0,0.95), rgba(60,0,0,0.55));
+  opacity: 0.95;
+  animation: slowDrip 5s linear infinite;
+}
+
+.popup::after, .bloody-popup::after{
+  bottom: -20%;
+  top: auto;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255,0,0,0.96), transparent 14%),
+    radial-gradient(circle at 70% 18%, rgba(180,0,0,0.9), transparent 18%),
+    linear-gradient(180deg, rgba(90,0,0,0.95), rgba(10,0,0,0.7));
+  transform: translateY(70%);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  animation: subtleSplash 6.5s ease-in-out infinite;
+}
+
+@keyframes slowDrip{
+  0% { transform: translateY(-30%); }
+  50% { transform: translateY(0%); }
+  100% { transform: translateY(8%); }
+}
+
+@keyframes subtleSplash{
+  0% { transform: translateY(70%) scale(1); }
+  45% { transform: translateY(60%) scale(0.99); }
+  100% { transform: translateY(70%) scale(1); }
+}
+
+/* Decorative fake "drops" you can add as elements inside the popup */
+.blood-drop{
+  position: absolute;
+  background: radial-gradient(circle at 40% 30%, #ff6b6b, #8b0000 60%);
+  width: 10px; height: 18px; border-radius: 60% 60% 50% 50%;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  animation: fall 1.6s ease-in-out infinite;
+  opacity: 0.95;
+}
+@keyframes fall{
+  0% { transform: translateY(-6px) scaleY(0.85); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(28px) scaleY(1.12); opacity: 0.15; }
+}
+
+/* Buttons with bloody sheen */
+.popup button, .modal button, .bloody-popup button{
+  background: linear-gradient(180deg, rgba(180,0,0,0.98), rgba(80,0,0,0.9));
+  color: #fff;
+  border: 2px solid rgba(40,0,0,0.9);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 700;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.65);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.popup button::after{
+  content: "";
+  position: absolute;
+  left: -30%; top: -40%; width: 160%; height: 160%;
+  background-image: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06), transparent 8%),
+                    radial-gradient(circle at 70% 70%, rgba(255,0,0,0.22), transparent 18%);
+  transform: rotate(-14deg);
+  transition: transform .45s ease;
+}
+.popup button:hover::after{ transform: translateY(6px) rotate(-14deg); }
+
+/* Optional utility to make background extra creepy */
+body.bloody-backdrop{
+  background: linear-gradient(180deg, #060203 0%, #1a0000 60%);
+  color: #ffecec;
+}
+
+/* Small accessibility: readable focus outlines */
+.popup button:focus { outline: 3px solid rgba(255,120,120,0.18); outline-offset: 2px; }
+
+/* Usage notes (keep in CSS so it's easy to copy):
+- Add class "bloody-popup" to your popup container to apply these styles.
+- Add elements with class "blood-drop" and inline style for left/top to place drips.
+- Optionally add class "bloody-backdrop" to body for a darker page background.
+*/
